@@ -1,0 +1,260 @@
+:root {
+  --border: #d0d0d0;
+  --accent: #2563eb;
+  --bg: #f9f9fb;
+}
+
+body {
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: #222;
+  max-width: 960px;
+  margin: 1.5rem auto;
+  padding: 0 1rem;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 1.2rem;
+}
+
+section {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,.03);
+}
+
+h2 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+  margin-top: 0;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin-bottom: .4rem;
+}
+.row label {
+  flex: 0 0 180px;
+  text-align: right;
+  font-weight: 500;
+}
+.row input {
+  flex: 1;
+  padding: .4rem .5rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+button {
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: .5rem 1rem;
+  cursor: pointer;
+}
+button:hover {
+  background: #1e40af;
+}
+
+.small-btn {
+  margin-top: .5rem;
+  background: #555;
+}
+.small-btn:hover {
+  background: #333;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: .5rem;
+}
+th, td {
+  border: 1px solid var(--border);
+  padding: .3rem;
+  text-align: left;
+}
+th {
+  background: #f0f0f0;
+  font-weight: 500;
+}
+
+.submit {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+/* таблица услуг */
+#internet_services table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  table-layout: fixed;        /* 👈 фиксируем сетку, чтобы не прыгала ширина */
+}
+#internet_services th, #internet_services td {
+  border: 1px solid var(--border);
+  padding: 0.4rem;
+  text-align: center;
+  vertical-align: top;
+  word-break: break-word;     /* 👈 перенос слов внутри ячеек */
+}
+#internet_services th {
+  background: #f4f4f6;
+  font-weight: 600;
+  color: #333;
+}
+#internet_services select,
+#internet_services input,
+#internet_services textarea {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.3rem 0.4rem;
+}
+#internet_services textarea.address {
+  resize: vertical;           /* 👈 можно тянуть вниз при необходимости */
+  min-height: 2.2rem;
+  max-height: 6rem;
+  overflow-y: auto;
+  white-space: pre-wrap;      /* 👈 перенос строк внутри текста */
+}
+
+#additional_services table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 0.9rem;
+}
+#additional_services th, #additional_services td {
+  border: 1px solid var(--border);
+  padding: 0.4rem;
+  text-align: center;
+  vertical-align: top;
+  word-break: break-word;
+}
+#additional_services select,
+#additional_services textarea {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.3rem 0.4rem;
+}
+#additional_services textarea.comment {
+  resize: vertical;
+  min-height: 2.2rem;
+  max-height: 6rem;
+  overflow-y: auto;
+  white-space: pre-wrap;
+}
+
+#device_services table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 0.9rem;
+}
+#device_services th, #device_services td {
+  border: 1px solid var(--border);
+  padding: 0.4rem;
+  text-align: center;
+  vertical-align: top;
+  word-break: break-word;
+}
+#device_services select,
+#device_services input,
+#device_services textarea {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.3rem 0.4rem;
+}
+#device_services textarea.address {
+  resize: vertical;
+  min-height: 2.2rem;
+  max-height: 6rem;
+  overflow-y: auto;
+  white-space: pre-wrap;
+}
+
+/* --- Popup (сине-серый стиль) --- */
+.popup-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 10, 30, 0.45); /* мягкий полупрозрачный синий фон */
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.popup {
+  position: relative;
+  background: linear-gradient(160deg, #f8f9fb, #e9ecf3);
+  border: 1px solid #c8d0e0;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+  width: 360px;
+  text-align: center;
+  padding: 1.8rem 1rem 1.2rem;
+  animation: slideUp 0.25s ease-out;
+  transform: translateY(-40px);
+}
+
+.popup-header {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1e3a8a; /* глубокий синий */
+  margin-bottom: 0.6rem;
+}
+
+.popup-body {
+  font-size: 0.95rem;
+  color: #2c3e50;
+  line-height: 1.4;
+}
+
+.popup-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  border: none;
+  background: transparent;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: #4b5563;
+  transition: color 0.2s;
+}
+.popup-close:hover {
+  color: #1e3a8a;
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

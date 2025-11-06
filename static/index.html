@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Генератор договора</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <h1>Генератор договоров с ИП</h1>
+
+  <form id="contractForm">
+    <section>
+      <h2>Основные данные</h2>
+      <div class="row"><label>Номер договора</label><input name="agreement_id" required></div>
+      <div class="row"><label>Дата договора</label><input name="agreement_date" placeholder="06 октября 2025 г." required></div>
+    </section>
+
+    <section>
+      <h2>Клиент (ИП)</h2>
+      <div class="row"><label>Полное имя</label><input name="client_full_name" placeholder="Петров Иван Михайлович" required></div>
+      <div class="row"><label>Короткое имя</label><input name="client_short_name" placeholder="Петров И. М." required></div>
+      <div class="row"><label>Юр. адрес</label><input name="client_juridical_address" required></div>
+      <div class="row"><label>Почтовый адрес</label><input name="client_mail_address" required></div>
+      <div class="row"><label>ИНН</label><input name="client_inn" required></div>
+      <div class="row"><label>ОГРН</label><input name="client_ogrn" required></div>
+
+      <div class="row"><label>Р/счет</label><input name="client_bank_account" required></div>
+      <div class="row"><label>Банк</label><input name="client_bank_name" placeholder="ООО Банк Точка" required> </div>
+      <div class="row"><label>БИК</label><input name="client_bank_bik" required></div>
+      <div class="row"><label>Кор/счет</label><input name="client_bank_correspondent_account" required></div>
+
+      <div class="row"><label>Телефон</label><input name="client_phone" required></div>
+      <div class="row"><label>Email</label><input name="client_email" type="email" required></div>
+    </section>
+
+    <section id="internet_services">
+      <h2>Интернет-услуги</h2>
+
+      <table id="internetTable">
+        <thead>
+          <tr>
+            <th style="width: 35%">Адрес подключения</th>
+            <th>Скорость, Мбит/с</th>
+            <th>Трафик</th>
+            <th>Аренда, ₽</th>
+            <th>Подключение, ₽</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="internetBody"></tbody>
+      </table>
+
+      <button type="button" class="small-btn" onclick="addInternet()">+ Добавить услугу</button>
+    </section>
+
+
+    <section id="additional_services">
+      <h2>Дополнительные услуги</h2>
+
+      <table id="addTable">
+        <thead>
+          <tr>
+            <th style="width: 40%">Услуга</th>
+            <th>Аренда, ₽</th>
+            <th style="width: 40%">Комментарий</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="addBody"></tbody>
+      </table>
+
+      <button type="button" class="small-btn" onclick="addAdditional()">+ Добавить услугу</button>
+    </section>
+
+    <section id="device_services">
+      <h2>Оборудование</h2>
+
+      <table id="deviceTable">
+        <thead>
+          <tr>
+            <th style="width: 25%">Наименование</th>
+            <th>Цена, ₽</th>
+            <th>Кол-во</th>
+            <th style="width: 30%">Адрес</th>
+            <th>Итого, ₽</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="deviceBody"></tbody>
+      </table>
+
+      <button type="button" class="small-btn" onclick="addDevice()">+ Добавить оборудование</button>
+    </section>
+
+
+    <div class="submit">
+      <button type="submit">Сформировать договор</button>
+    </div>
+  </form>
+
+  <div id="popupOverlay" class="popup-overlay hidden" onclick="closePopup(event)">
+    <div class="popup">
+      <button class="popup-close" onclick="closePopup()">✖</button>
+      <div class="popup-header">Успех</div>
+      <div class="popup-body">Договор с ИП создан и скачан</div>
+    </div>
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>

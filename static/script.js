@@ -121,69 +121,98 @@ function recalcDeviceTotal(amountInput) {
 // отправка
 document.getElementById("contractForm").addEventListener("submit", async (e) => {
   e.preventDefault();
-  const fd = new FormData(e.target);
-  const context = Object.fromEntries(fd.entries());
+  showPopup("loading");
 
-  context.internet_services = [...document.querySelectorAll("#internetBody tr")].map(row => {
-    const idx = row.querySelector(".speed").value;
-    if (idx === "") return null;
-    const t = INTERNET_SPEEDS[idx];
-    return {
-      address: row.querySelector(".address").value,
-      traffic: t.traffic,
-      speed: t.speed,
-      rent: t.rent,
-      connection_fee: t.connection_fee,
-    };
-  }).filter(Boolean);
+  try{
+    const fd = new FormData(e.target);
+    const context = Object.fromEntries(fd.entries());
 
-    context.additional_services = [...document.querySelectorAll("#addBody tr")].map(row => {
-    const idx = row.querySelector(".service").value;
-    if (idx === "") return null;
-    const s = ADDITIONAL_SERVICES[idx];
-    return {
-        name: s.name,
-        rent: s.rent,
-        comment: row.querySelector(".comment").value
-    };
-    }).filter(Boolean);
-
-    context.device_services = [...document.querySelectorAll("#deviceBody tr")].map(row => {
-    const idx = row.querySelector(".device").value;
-    if (idx === "") return null;
-    const d = DEVICE_MODELS[idx];
-    const amount = Number(row.querySelector(".amount").value) || 0;
-    return {
-        name: d.name,
-        price: d.price,
-        amount: String(amount),
+    context.internet_services = [...document.querySelectorAll("#internetBody tr")].map(row => {
+        const idx = row.querySelector(".speed").value;
+        if (idx === "") return null;
+        const t = INTERNET_SPEEDS[idx];
+        return {
         address: row.querySelector(".address").value,
-        total_price: String(d.price * amount)
-    };
+        traffic: t.traffic,
+        speed: t.speed,
+        rent: t.rent,
+        connection_fee: t.connection_fee,
+        };
     }).filter(Boolean);
 
-  const resp = await fetch("/generate_agreement", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(context),
-  });
+        context.additional_services = [...document.querySelectorAll("#addBody tr")].map(row => {
+        const idx = row.querySelector(".service").value;
+        if (idx === "") return null;
+        const s = ADDITIONAL_SERVICES[idx];
+        return {
+            name: s.name,
+            rent: s.rent,
+            comment: row.querySelector(".comment").value
+        };
+        }).filter(Boolean);
 
-  if (!resp.ok) {
-    alert("Ошибка генерации");
-    return;
+        context.device_services = [...document.querySelectorAll("#deviceBody tr")].map(row => {
+        const idx = row.querySelector(".device").value;
+        if (idx === "") return null;
+        const d = DEVICE_MODELS[idx];
+        const amount = Number(row.querySelector(".amount").value) || 0;
+        return {
+            name: d.name,
+            price: d.price,
+            amount: String(amount),
+            address: row.querySelector(".address").value,
+            total_price: String(d.price * amount)
+        };
+        }).filter(Boolean);
+
+    const resp = await fetch("/generate_agreement", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(context),
+    });
+
+        if (!resp.ok) {
+        showPopup("error", "Ошибка генерации договора. Проверьте данные и попробуйте снова.");
+        return;
+        }
+
+        const blob = await resp.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "agreement.docx";
+        a.click();
+        URL.revokeObjectURL(url);
+
+        showPopup("success");
+  } catch (err) {
+    console.error(err);
+    showPopup("error", "Не удалось подключиться к серверу.");
   }
-
-  const blob = await resp.blob();
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "agreement.docx";
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
-  document.getElementById("popupOverlay").classList.remove("hidden");
 });
+
+
+function showPopup(status = "loading", message = "Генерируется договор...") {
+  const popup = document.getElementById("popupOverlay");
+  const header = document.getElementById("popup-header");
+  const body = document.getElementById("popup-body");
+
+  popup.classList.remove("hidden");
+
+  if (status === "loading") {
+    header.textContent = "⏳ Обработка запроса";
+    body.textContent = message;
+    body.classList.add("loading");
+  } else if (status === "success") {
+    header.textContent = "Успех!";
+    body.textContent = "Договор успешно создан. Скачивание начнется в ближайшее время.";
+    body.classList.remove("loading");
+  } else if (status === "error") {
+    header.textContent = "❌ Ошибка";
+    body.textContent = message || "Произошла ошибка при генерации договора.";
+    body.classList.remove("loading");
+  }
+}
 
 function closePopup(event) {
   // если кликнули на сам фон или на кнопку — закрыть
